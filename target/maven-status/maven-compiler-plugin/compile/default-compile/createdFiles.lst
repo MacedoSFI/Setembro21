@@ -1,0 +1,5 @@
+com\felipe\setembro21\model\Usuario.class
+com\felipe\setembro21\repository\UsuarioRepository.class
+com\felipe\setembro21\controller\ControllerOK.class
+com\felipe\setembro21\controller\UsuarioController.class
+com\felipe\setembro21\DemoApplication.class

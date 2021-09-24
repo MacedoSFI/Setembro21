@@ -79,7 +79,8 @@ public class UsuarioController {
 	@ResponseBody
 	public ResponseEntity<String> remover(@RequestParam Long id) {
 		Optional<Usuario> user = usuarioRepository.findById(id);//getById(id);
-		String nomeUser = user.toString();//getNome();
+		String nomeUser = user.get().getNome();//getNome();
+		System.out.println("nomeUser: " + nomeUser);
 		usuarioRepository.deleteById(id);
 		return new ResponseEntity<String>("Usuário " + nomeUser + " removido com sucesso!", HttpStatus.OK);
 	}

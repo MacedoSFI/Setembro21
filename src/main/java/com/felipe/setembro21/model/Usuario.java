@@ -2,21 +2,27 @@ package com.felipe.setembro21.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
-@SequenceGenerator(name="seq_usuario", sequenceName="seq_usuario", allocationSize=1, initialValue=1)
+@Table(name = "usuarios")
 public class Usuario implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_usuario")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id") //www.baeldung.com/jpa-one-to-one
 	private Long id;
 	
 	private String nome;
@@ -24,6 +30,10 @@ public class Usuario implements Serializable {
 	private String email;
 	
 	private Date dtNascimento;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "conta", referencedColumnName = "id")
+	private Conta conta;
 
 	public Long getId() {
 		return id;
@@ -55,6 +65,32 @@ public class Usuario implements Serializable {
 
 	public void setDtNascimento(Date dtNascimento) {
 		this.dtNascimento = dtNascimento;
+	}
+	
+	public Conta getConta() {
+		return conta;
+	}
+	public void setConta(Conta conta) {
+		this.conta = conta;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(conta, dtNascimento, email, id, nome);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Usuario other = (Usuario) obj;
+		return Objects.equals(conta, other.conta) && Objects.equals(dtNascimento, other.dtNascimento)
+				&& Objects.equals(email, other.email) && Objects.equals(id, other.id)
+				&& Objects.equals(nome, other.nome);
 	}
 	
 }

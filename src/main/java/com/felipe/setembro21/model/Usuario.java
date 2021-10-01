@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -34,6 +35,10 @@ public class Usuario implements Serializable {
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "conta", referencedColumnName = "id")
 	private Conta conta;
+	
+	@OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn //assim o obj celular não vai aparecer na busca de usuario com json
+    private CelularNumero celular; 
 
 	public Long getId() {
 		return id;

@@ -27,7 +27,7 @@ public class Conta implements Serializable {
 	private Double saldo;
 	
 	@JsonIgnore
-	@OneToOne(mappedBy = "conta")
+	@OneToOne(mappedBy = "conta") //optional = false não permite contas sem usuário (pai) fiz e deu erro 
 	private Usuario usuario;
 
 	public Conta() {

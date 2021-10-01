@@ -205,6 +205,10 @@
 					$("#nome").val(response.nome);
 					$("#email").val(response.email);
 					$("#dtNascimento").val(response.dtNascimento);
+					$("conta").val(response.conta);
+					$("tipoPix").val(response.tipoPix);
+					$("chavePix").val(response.chavePix);
+					$("saldo").val(response.saldo);
 					$('#pesquisarModal').modal('hide');
 				}
 			}).fail(function (xhr, status, errorThrown) {

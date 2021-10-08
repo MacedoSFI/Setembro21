@@ -58,6 +58,17 @@ public class UsuarioController {
 		List<Usuario> usuarios = usuarioRepository.buscarPorNome(name.trim().toUpperCase());
 		return new ResponseEntity<List<Usuario>>(usuarios, HttpStatus.OK);
 	}
+	
+	@GetMapping(value = "findUserByLogin")
+	@ResponseBody
+	public ResponseEntity<Usuario> findUserByLogin(@RequestParam(name = "email") String email) {
+		Usuario usuario = usuarioRepository.findUserByLogin(email.trim().toLowerCase());
+		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
+	}
+	 
+	
+	
+	
 
 	@PostMapping(value = "salvar") // pega o JSON do corpo {"nome": "Post no Postman", "email":
 									// "email@postman.com", "dtNascimento": null}

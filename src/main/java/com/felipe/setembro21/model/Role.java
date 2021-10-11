@@ -1,6 +1,6 @@
 package com.felipe.setembro21.model;
 
-import java.io.Serial;
+//import java.io.Serial;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

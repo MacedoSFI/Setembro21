@@ -18,7 +18,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -48,11 +47,11 @@ public class Usuario implements UserDetails {
 	private String password;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "conta", referencedColumnName = "id")
+    @JoinColumn(name = "conta_id", referencedColumnName = "id")
 	private Conta conta;
 	
-	@OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn //assim o obj celular não vai aparecer no res. da busca de usuario com json
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "celular_id", referencedColumnName = "id")
     private CelularNumero celular;
 	
 	@OneToMany(fetch = FetchType.EAGER)
@@ -104,10 +103,9 @@ public class Usuario implements UserDetails {
 		this.conta = conta;
 	}
 
-	/* Alex passou tudo para true*/
 	@Override
 	public int hashCode() {
-		return Objects.hash(conta, dtNascimento, email, id, nome);
+		return Objects.hash(celular, conta, dtNascimento, email, id, nome, password, roles);
 	}
 
 	@Override
@@ -119,14 +117,14 @@ public class Usuario implements UserDetails {
 		if (getClass() != obj.getClass())
 			return false;
 		Usuario other = (Usuario) obj;
-		return Objects.equals(conta, other.conta) && Objects.equals(dtNascimento, other.dtNascimento)
-				&& Objects.equals(email, other.email) && Objects.equals(id, other.id)
-				&& Objects.equals(nome, other.nome);
+		return Objects.equals(celular, other.celular) && Objects.equals(conta, other.conta)
+				&& Objects.equals(dtNascimento, other.dtNascimento) && Objects.equals(email, other.email)
+				&& Objects.equals(id, other.id) && Objects.equals(nome, other.nome)
+				&& Objects.equals(password, other.password) && Objects.equals(roles, other.roles);
 	}
 
 	@Override  // classe Role implementa GrantedAuthority
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		System.out.println("roles: " + roles);
 		return roles;
 	}
 

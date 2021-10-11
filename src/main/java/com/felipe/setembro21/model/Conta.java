@@ -22,6 +22,7 @@ public class Conta implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
 	private Long id;
+	
 	private String tipoPix;
 	private String chavePix;
 	private Double saldo;

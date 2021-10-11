@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -64,16 +65,14 @@ public class UsuarioController {
 	public ResponseEntity<Usuario> findUserByLogin(@RequestParam(name = "email") String email) {
 		Usuario usuario = usuarioRepository.findUserByLogin(email.trim().toLowerCase());
 		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
-	}
-	 
-	
-	
-	
+	}	
 
 	@PostMapping(value = "salvar") // pega o JSON do corpo {"nome": "Post no Postman", "email":
 									// "email@postman.com", "dtNascimento": null}
 	@ResponseBody
 	public ResponseEntity<Usuario> salvar(@RequestBody Usuario usuario) {
+		String senhacriptografada = new BCryptPasswordEncoder().encode(usuario.getPassword());
+		usuario.setPassword(senhacriptografada);
 		Usuario user = usuarioRepository.save(usuario);
 		return new ResponseEntity<Usuario>(user, HttpStatus.CREATED);
 	}

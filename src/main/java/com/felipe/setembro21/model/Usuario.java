@@ -25,6 +25,8 @@ import javax.persistence.UniqueConstraint;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "usuarios")
 public class Usuario implements UserDetails {
@@ -38,6 +40,7 @@ public class Usuario implements UserDetails {
 	
 	private String nome;
 	
+	@Column(unique=true)
 	private String email;//estou considerando o e-mail como username do UserDetails
 	
 	private Date dtNascimento;
@@ -123,12 +126,17 @@ public class Usuario implements UserDetails {
 
 	@Override  // classe Role implementa GrantedAuthority
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return null;
+		System.out.println("roles: " + roles);
+		return roles;
 	}
 
 	@Override
 	public String getPassword() {
 		return this.password;
+	}
+	
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	@Override
@@ -136,28 +144,28 @@ public class Usuario implements UserDetails {
 		return this.email;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
+	@JsonIgnore
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	
 }

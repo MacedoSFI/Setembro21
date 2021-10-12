@@ -1,7 +1,10 @@
 package com.felipe.setembro21;
 
+import java.sql.SQLException;
 import java.util.List;
 
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,5 +39,23 @@ public class ControleExcecoes extends ResponseEntityExceptionHandler {
 		
 		
 		return new ResponseEntity<>(objErro, headers, status);
+	}
+	
+	@ExceptionHandler({DataIntegrityViolationException.class, ConstraintViolationException.class, SQLException.class})
+	protected ResponseEntity<Object> handleExceptionDataIntegrity(Exception ex) {
+		String msgErro = "";
+		if (ex instanceof DataIntegrityViolationException) {
+			msgErro = ((DataIntegrityViolationException) ex).getCause().getMessage();
+		} else if (ex instanceof ConstraintViolationException) {
+			msgErro = ((ConstraintViolationException) ex).getCause().getMessage();
+		}  else if (ex instanceof SQLException) {
+			msgErro = ((SQLException) ex).getCause().getMessage();
+		} else msgErro = ex.getMessage();
+		
+		ObjetoErro objErro = new ObjetoErro();
+		objErro.setError(msgErro);
+		objErro.setCode(HttpStatus.INTERNAL_SERVER_ERROR + "==> " + HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+	
+		return new ResponseEntity<>(objErro, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }

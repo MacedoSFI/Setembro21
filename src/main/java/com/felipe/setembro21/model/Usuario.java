@@ -39,6 +39,8 @@ public class Usuario implements UserDetails {
 	
 	private String nome;
 	
+	private String token;
+	
 	@Column(unique=true)
 	private String email;//estou considerando o e-mail como username do UserDetails
 	
@@ -102,10 +104,17 @@ public class Usuario implements UserDetails {
 	public void setConta(Conta conta) {
 		this.conta = conta;
 	}
+	
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
+	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(celular, conta, dtNascimento, email, id, nome, password, roles);
+		return Objects.hash(celular, conta, dtNascimento, email, id, nome, token, password, roles);
 	}
 
 	@Override
@@ -117,7 +126,7 @@ public class Usuario implements UserDetails {
 		if (getClass() != obj.getClass())
 			return false;
 		Usuario other = (Usuario) obj;
-		return Objects.equals(celular, other.celular) && Objects.equals(conta, other.conta)
+		return Objects.equals(celular, other.celular) && Objects.equals(token, other.token) && Objects.equals(conta, other.conta)
 				&& Objects.equals(dtNascimento, other.dtNascimento) && Objects.equals(email, other.email)
 				&& Objects.equals(id, other.id) && Objects.equals(nome, other.nome)
 				&& Objects.equals(password, other.password) && Objects.equals(roles, other.roles);

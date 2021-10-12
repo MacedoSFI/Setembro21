@@ -22,6 +22,7 @@ public class DemoApplication implements WebMvcConfigurer {
 		.allowedOrigins("*");//aqui acho que devo permitir o frontend da app
 		
 	}
+	//TODO manipulação de datas;
 
 }
 

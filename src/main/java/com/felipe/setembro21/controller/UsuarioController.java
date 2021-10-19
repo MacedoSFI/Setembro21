@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.felipe.setembro21.dto.UsuarioDTO;
 import com.felipe.setembro21.model.Usuario;
 import com.felipe.setembro21.repository.UsuarioRepository;
 
@@ -49,9 +50,9 @@ public class UsuarioController {
 
 	@GetMapping(value = "buscaruserid")
 	@ResponseBody // no postman form-data key iduser e value 1 para usuario de id=1
-	public ResponseEntity<Usuario> buscaruserid(@RequestParam(name = "iduser") Long iduser) {
+	public ResponseEntity<UsuarioDTO> buscaruserid(@RequestParam(name = "iduser") Long iduser) {
 		Usuario usuario = usuarioRepository.findById(iduser).get();
-		return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
+		return new ResponseEntity<UsuarioDTO>(new UsuarioDTO(usuario), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "buscarPorNome")
@@ -82,7 +83,8 @@ public class UsuarioController {
 										// "email@postman.com", "dtNascimento": null}
 	@ResponseBody // se não colocar o campo id no json vai criar outro usuario
 	public ResponseEntity<Usuario> atualizar(@RequestBody Usuario usuario) {
-		Usuario userDB = usuarioRepository.findUserByLogin(usuario.getEmail());
+		Usuario userDB = usuarioRepository.findById(usuario.getId()).get();
+		
 		if (!userDB.getPassword().equals(usuario.getPassword())) {
 			String senhacriptografada = new BCryptPasswordEncoder().encode(usuario.getPassword());
 			usuario.setPassword(senhacriptografada);

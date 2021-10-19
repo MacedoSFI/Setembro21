@@ -23,7 +23,7 @@ public class JWTTokenAutenticacaoService {
 	
 	
 	/*Tem de validade do Token 2 dias*/
-	private static final long EXPIRATION_TIME = 172800000;
+	private static final long EXPIRATION_TIME = 172800000; //172800000 2 dias 60000=1min
 	
 	/*Uma senha unica para compor a autenticacao e ajudar na segurança*/
 	private static final String SECRET = "SenhaExtremamenteSecreta";
@@ -48,6 +48,9 @@ public class JWTTokenAutenticacaoService {
 		/*Adiciona no cabeçalho http*/
 		response.addHeader(HEADER_STRING, token); /*Authorization: Bearer 87878we8we787w8e78w78e78w7e87w*/
 
+		ApplicationContextLoad.getApplicationContext()
+        .getBean(UsuarioRepository.class).atualizaTokenUser(JWT, username);
+		
 		liberacaoCors(response);
 		
 		/*Escreve token como responsta no corpo http*/
@@ -62,6 +65,8 @@ public class JWTTokenAutenticacaoService {
 		/*Pega o token enviado no cabeçalho http*/
 		
 		String token = request.getHeader(HEADER_STRING);
+		
+		try {
 		
 		if (token != null) {
 			
@@ -84,6 +89,11 @@ public class JWTTokenAutenticacaoService {
 					}
 				}
 			}	
+		}
+		} catch (io.jsonwebtoken.ExpiredJwtException e) {
+			try {
+				response.getOutputStream().println("TOKEN expirado! Faça o login ou informe um token válido");
+			} catch (IOException e1) {}
 		}
 		liberacaoCors(response);
 		return null; /*Não autorizado*/

@@ -41,7 +41,7 @@ public class Usuario implements UserDetails {
 	
 	private String token;
 	
-	@Column(unique=true)
+	@Column(unique=true, updatable = false)
 	private String email;//estou considerando o e-mail como username do UserDetails
 	
 	private Date dtNascimento;
@@ -87,7 +87,7 @@ public class Usuario implements UserDetails {
 	}
 
 	public void setEmail(String email) {
-		this.email = email;
+		this.email = email;			
 	}
 
 	public Date getDtNascimento() {
@@ -104,7 +104,12 @@ public class Usuario implements UserDetails {
 	public void setConta(Conta conta) {
 		this.conta = conta;
 	}
-	
+	public CelularNumero getCelular() {
+		return celular;
+	}
+	public void setCelular(CelularNumero celular) {
+		this.celular = celular;
+	}
 	public String getToken() {
 		return token;
 	}

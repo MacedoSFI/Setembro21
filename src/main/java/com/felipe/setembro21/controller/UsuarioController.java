@@ -31,17 +31,17 @@ public class UsuarioController {
 	@Autowired
 	UsuarioRepository usuarioRepository;
 
-	@RequestMapping(value = "/nome/{name}", method = RequestMethod.GET)
-	@ResponseStatus(HttpStatus.OK)
-	public String user(@PathVariable String name) {
+	/* APENAS PARA FINS DIDÁTICOS
+	 * @RequestMapping(value = "/nome/{name}", method = RequestMethod.GET)
+	 * 
+	 * @ResponseStatus(HttpStatus.OK) public String user(@PathVariable String name)
+	 * {
+	 * 
+	 * Usuario usuario = new Usuario(); usuario.setNome(name);
+	 * usuarioRepository.save(usuario); return "usuário: " + usuario.getNome(); }
+	 */
 
-		Usuario usuario = new Usuario();
-		usuario.setNome(name);
-		usuarioRepository.save(usuario);
-		return "usuário: " + usuario.getNome();
-	}
-
-	@GetMapping(value = "listarusuarios")
+	@GetMapping(value = "listarusuarios")// apenas ROLE_ADMIN
 	@ResponseBody
 	public ResponseEntity<Iterable<Usuario>> listaUsuario() {
 		Iterable<Usuario> usuarios = usuarioRepository.findAll();
@@ -62,7 +62,7 @@ public class UsuarioController {
 		return new ResponseEntity<List<Usuario>>(usuarios, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "findUserByLogin")
+	@GetMapping(value = "finduserbylogin")
 	@ResponseBody
 	public ResponseEntity<Usuario> findUserByLogin(@RequestParam(name = "email") String email) {
 		Usuario usuario = usuarioRepository.findUserByLogin(email.trim().toLowerCase());
@@ -79,6 +79,7 @@ public class UsuarioController {
 		return new ResponseEntity<Usuario>(user, HttpStatus.CREATED);
 	}
 
+	//*** COMO PERMITIR ATUALIZAR APENAS A  SI MESMO? sistema identificar quem está requisitando e carregar seus dados de usuario *****
 	@PutMapping(value = "atualizar") // pega o JSON do corpo {"nome": "Post no Postman", "email":
 										// "email@postman.com", "dtNascimento": null}
 	@ResponseBody // se não colocar o campo id no json vai criar outro usuario
@@ -93,7 +94,7 @@ public class UsuarioController {
 		return new ResponseEntity<Usuario>(user, HttpStatus.OK);
 	}
 
-	@DeleteMapping("deletar")
+	@DeleteMapping("deletar")//restringir isso depois
 	@ResponseBody
 	public ResponseEntity<String> remover(@RequestParam Long id) {
 		Optional<Usuario> user = usuarioRepository.findById(id);//getById(id);

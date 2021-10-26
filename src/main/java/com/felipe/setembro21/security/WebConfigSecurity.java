@@ -29,7 +29,7 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
 		http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 		.disable().authorizeRequests()
 		.antMatchers("/").permitAll()
-		.antMatchers("/index").permitAll()
+		.antMatchers("/**").permitAll()
 		.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 		.anyRequest().authenticated().and().logout().logoutSuccessUrl("/index")
 		.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))

@@ -113,6 +113,7 @@
 			var nome = $("#nome").val();
 			var email = $("#email").val();
 			var dtNascimento = $("#dataNasc").val();
+			var password = "123";
 			
 			if (nome == null || nome != null && nome.trim() == '') {
 				alert("Informe o nome");
@@ -131,7 +132,7 @@
 					nome: nome,
 					email: email,
 					dtNascimento: dtNascimento,
-					password: "123"
+					password: password
 				}),
 				contentType: "application/json; charset=utf-8",
 				success: function (response) {

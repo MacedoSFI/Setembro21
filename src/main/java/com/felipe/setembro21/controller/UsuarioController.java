@@ -10,19 +10,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.felipe.setembro21.dto.UsuarioDTO;
 import com.felipe.setembro21.model.Usuario;
+import com.felipe.setembro21.repository.CelularNumeroRepository;
+import com.felipe.setembro21.repository.ContaRepository;
 import com.felipe.setembro21.repository.UsuarioRepository;
 
 @RestController
@@ -30,17 +28,13 @@ public class UsuarioController {
 
 	@Autowired
 	UsuarioRepository usuarioRepository;
-
-	/* APENAS PARA FINS DIDÁTICOS
-	 * @RequestMapping(value = "/nome/{name}", method = RequestMethod.GET)
-	 * 
-	 * @ResponseStatus(HttpStatus.OK) public String user(@PathVariable String name)
-	 * {
-	 * 
-	 * Usuario usuario = new Usuario(); usuario.setNome(name);
-	 * usuarioRepository.save(usuario); return "usuário: " + usuario.getNome(); }
-	 */
-
+	
+	@Autowired
+	CelularNumeroRepository telefoneRepository;
+	
+	@Autowired
+	ContaRepository contaRepository;
+	
 	@GetMapping(value = "listarusuarios")// apenas ROLE_ADMIN
 	@ResponseBody
 	public ResponseEntity<Iterable<Usuario>> listaUsuario() {
@@ -75,6 +69,7 @@ public class UsuarioController {
 	public ResponseEntity<Usuario> salvar(@RequestBody Usuario usuario) {
 		String senhacriptografada = new BCryptPasswordEncoder().encode(usuario.getPassword());
 		usuario.setPassword(senhacriptografada);
+		// exemplo: pessoa.setTelefones(telefoneRepository.getTelefones(pessoa.getId())); 
 		Usuario user = usuarioRepository.save(usuario);
 		return new ResponseEntity<Usuario>(user, HttpStatus.CREATED);
 	}

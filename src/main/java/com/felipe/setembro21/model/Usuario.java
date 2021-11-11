@@ -101,14 +101,14 @@ public class Usuario implements UserDetails {
 	public Conta getConta() {
 		return conta;
 	}
-	public void setConta(Conta conta) {
-		this.conta = conta;
+	public void setConta(String tipo, String chave) {
+		this.conta = new Conta(tipo, chave);
 	}
 	public CelularNumero getCelular() {
 		return celular;
 	}
-	public void setCelular(CelularNumero celular) {
-		this.celular = celular;
+	public void setCelular(String celular) {
+		this.celular = new CelularNumero(celular);
 	}
 	public String getToken() {
 		return token;

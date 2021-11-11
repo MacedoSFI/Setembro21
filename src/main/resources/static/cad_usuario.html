@@ -8,7 +8,7 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
 		integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
 
-	<title>Apenas um CRUD de Usuário</title>
+	<title>CRUD de Usuário</title>
 	<style>
 		html {
 			margin-right: 20%;
@@ -33,6 +33,10 @@
 				<label for="email" class="form-label">Email</label>
 				<input type="email" class="form-control" id="email" placeholder="name@example.com">
 			</div>
+			<div class="mb-2">
+				<label for="telefone" class="form-label">Telefone</label>
+				<input type="number" class="form-control" id="telefone" placeholder="DDD+NUM apenas números">
+			</div>
 
 			<div class="mb-2">
 				<label for="dataNasc" class="form-label">Data de nascimento</label>
@@ -47,10 +51,14 @@
 				  <option value="4">E-MAIL</option>
 				  <option value="5">ALEATÓRIA</option>
 				</select>
-			</div>
+			</div> 
 			<div class="mb-2">
 				<label for="chavePix" class="form-label">ChavePix</label>
 				<input type="chavePix" class="form-control" id="chavePix">
+			</div>
+			<div class="mb-2">
+				<label for="password" class="form-label">Senha</label>
+				<input type="password" class="form-control" id="password">
 			</div>
 		</form>
 		<button type="button" class="btn btn-secondary"
@@ -84,10 +92,8 @@
 									<th scope="col">ID</th>
 									<th scope="col">NOME</th>
 									<th scope="col">E-MAIL</th>
+									<th scope="col">TELEFONE</th>
 									<th scope="col">NASCIMENTO</th>
-									<th scope="col">CONTA</th>
-									<th scope="col">TIPO DA CHAVE</th>
-									<th scope="col">CHAVE PIX</th>
 									<th scope="col">SALDO</th>
 									<th scope="col">ABRIR</th>
 									<th scope="col">EXCLUIR</th>
@@ -112,8 +118,11 @@
 			var id = $("#id").val();
 			var nome = $("#nome").val();
 			var email = $("#email").val();
+			var telefone = $("#telefone").val();
+			var tipoPix = $("#tipoPix").val();
+			var chavePix = $("#chavePix").val();
 			var dtNascimento = $("#dataNasc").val();
-			var password = "123";
+			var password = $("#password").val();
 			
 			if (nome == null || nome != null && nome.trim() == '') {
 				alert("Informe o nome");
@@ -121,6 +130,14 @@
 			}
 			if (email == null || email != null && email.trim() == '') {
 				alert("Informe o e-mail");
+				return;
+			}
+			if (telefone == null || telefone != null && telefone.trim() == '') {
+				alert("Informe o número do telefone");
+				return;
+			}
+			if (password == null || password != null && password.trim() == '') {
+				alert("Informe a senha");
 				return;
 			}
 
@@ -131,6 +148,9 @@
 					id: id,
 					nome: nome,
 					email: email,
+					telefone: telefone,
+					tipoPix: tipoPix,
+					chavePix: chavePix,
 					dtNascimento: dtNascimento,
 					password: password
 				}),
@@ -165,7 +185,7 @@
 					success: function (response) {
 						$('#tabelaResultadoUsuarios > tbody > tr').remove();
 						for (var i = 0; i < response.length; i++) {
-							$('#tabelaResultadoUsuarios > tbody').append('<tr id="' + response[i].id + '"><td>' + response[i].id + '</td><td>' + response[i].nome + '</td><td>' + response[i].email + '</td><td>' + response[i].dtNascimento + '</td><td>' + response[i].conta + '</td><td>' + response[i].tipoPix + '</td><td>' + response[i].chavePix + '</td><td>' + response[i].saldo + '</td><td><button type="button" onclick="colocarEmEdicao(' + response[i].id + ')" class="btn btn-primary">Ver</button></td><td><button type="button" class="btn btn-danger" onclick="deleteUser(' + response[i].id + ')">Delete</button></td></tr>');
+							$('#tabelaResultadoUsuarios > tbody').append('<tr id="' + response[i].id + '"><td>' + response[i].id + '</td><td>' + response[i].nome + '</td><td>' + response[i].email + '</td><td>' + response[i].telefone + '</td><td>' + response[i].dtNascimento + '</td><td>' + response[i].saldo + '</td><td><button type="button" onclick="colocarEmEdicao(' + response[i].id + ')" class="btn btn-primary">Ver</button></td><td><button type="button" class="btn btn-danger" onclick="deleteUser(' + response[i].id + ')">Delete</button></td></tr>');
 						}
 					}
 				}).fail(function (xhr, status, errorThrown) {
